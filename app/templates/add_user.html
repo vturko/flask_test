@@ -2,9 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Add User</title>
 </head>
 <body>
+    {% block body %}
+      <h2>Add User:</h2>
+      {% if error %}<h1 class=error><strong>Message:</strong> {{ error }}</h1>{% endif %}
+      <form action="{{ url_for('add_user')}}" method="post">
+        <dl>
+            <dt>*Name:</dt>
+            <dd><input type="text" name="name"></dd>
+            <dt>*E-mail:</dt>
+            <dd><input type="text" name="email"></dd>
+            <dt>Phone:</dt>
+            <dd><input type="text" name="phone"></dd>
+            <dt>Mobile phone:</dt>
+            <dd><input type="text" name="mobile"></dd>
+            <dt>*Status:</dt>
+            <!--<dd><input type="text" name="status"></dd>-->
+            <dd>
+                <select name="status">
+                  <option value="Active">Active</option>
+                  <option value="Inactive" selected>Inactive</option>
+                </select>
+            </dd>
 
+            <!--<br><br><br>-->
+            <!--<dt>Ignore whitelist:</dt>-->
+            <!--<dd><input type="checkbox" name="ignore_whitelist"></dd>-->
+            <br>
+            <dd><input type=submit value="Add Data">
+        </dl>
+      </form>
+    {% endblock %}
 </body>
 </html>
