@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,34 +9,49 @@
 </head>
 <body>
     {% block body %}
-      <h2>Add User:</h2>
-      {% if error %}<h1 class=error><strong>Message:</strong> {{ error }}</h1>{% endif %}
-      <form action="{{ url_for('add_user')}}" method="post">
-        <dl>
-            <dt>*Name:</dt>
-            <dd><input type="text" name="name"></dd>
-            <dt>*E-mail:</dt>
-            <dd><input type="text" name="email"></dd>
-            <dt>Phone:</dt>
-            <dd><input type="text" name="phone"></dd>
-            <dt>Mobile phone:</dt>
-            <dd><input type="text" name="mobile"></dd>
-            <dt>*Status:</dt>
-            <!--<dd><input type="text" name="status"></dd>-->
-            <dd>
-                <select name="status">
-                  <option value="Active">Active</option>
-                  <option value="Inactive" selected>Inactive</option>
-                </select>
-            </dd>
-
-            <!--<br><br><br>-->
-            <!--<dt>Ignore whitelist:</dt>-->
-            <!--<dd><input type="checkbox" name="ignore_whitelist"></dd>-->
-            <br>
-            <dd><input type=submit value="Add Data">
-        </dl>
-      </form>
+    {% if error_msg %}<h1 class=error style="text-align: right"> {{ error_msg }}</h1>{% endif %}
+        <h2>Create User:</h2>
+        <form action="{{ url_for('add_user')}}" method="post">
+            {{ form.csrf_token }}
+            <dl>
+                <dt>*Name:</dt>
+                <dd>
+                    {{form.name}}
+                    <br>
+                    {% for error in form.errors.name %}
+                        <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}
+                </dd>
+                <dt>*E-mail:</dt>
+                <dd>
+                    {{form.email}}
+                    <br>
+                    {% for error in form.errors.email %}
+                        <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}
+                </dd>
+                <dt>Phone:</dt>
+                <dd>
+                    {{form.phone}}
+                    <br>
+                    {% for error in form.errors.phone %}
+                        <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}
+                </dd>
+                <dt>Mobile phone:</dt>
+                <dd>
+                    {{form.mobile}}
+                    <br>
+                    {% for error in form.errors.mobile %}
+                        <span style="color: red;">[{{error}}]</span>
+                    {% endfor %}
+                </dd>
+                <dt>*Status:</dt>
+                <dd>{{form.status}}</dd>
+                <dt></dt>
+                <dd><br><input type=submit value="Create">
+            </dl>
+        </form>
     {% endblock %}
 </body>
 </html>
