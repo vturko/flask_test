@@ -1,4 +1,15 @@
-from app import CONN
+import MySQLdb
+
+from app import app
+
+DATABASE = app.config['DATABASE']
+
+CONN = MySQLdb.connect(
+    host=DATABASE['host'],
+    user=DATABASE['username'],
+    passwd=DATABASE['password'],
+    db=DATABASE['database']
+)
 
 
 class BaseService():
