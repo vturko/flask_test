@@ -24,7 +24,7 @@ class BaseService():
                 return cur.fetchall()
             elif commit:
                 CONN.commit()
-                return [True]
+                return True
 
         except BaseException as e:
             if commit:

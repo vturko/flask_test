@@ -1,11 +1,8 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add User</title>
+    <title>Title</title>
 </head>
 <body>
     <a href="/users">Users</a>
@@ -15,23 +12,19 @@
         {% endif %}
         {% if confirm_msg %}
             <h1 class=error style="text-align: right"> {{ confirm_msg }}</h1>
-            <meta http-equiv="refresh" content="5; url=/users" />
         {% endif %}
-        <h2>Create User:</h2>
-        <form action="{{ url_for('add_user')}}" method="post">
+        <h2>Change User:</h2>
+        <form action="{{ url_for('change_user', id=user.id)}}" method="post">
             {{ form.csrf_token }}
             <dl>
                 <dt>*Name:</dt>
                 <dd>
-                    {{form.name}}
-                    <br>
-                    {% for error in form.errors.name %}
-                        <span style="color: red;">[{{error}}]</span>
-                    {% endfor %}
+                    {{ form.name(readonly="readonly", value=user.name,
+                    style="background-color: #000000; color: white; font-weight: bold;") }}
                 </dd>
                 <dt>*E-mail:</dt>
                 <dd>
-                    {{form.email}}
+                    {{ form.email(value=user.email)}}
                     <br>
                     {% for error in form.errors.email %}
                         <span style="color: red;">[{{error}}]</span>
@@ -39,7 +32,7 @@
                 </dd>
                 <dt>Phone:</dt>
                 <dd>
-                    {{form.phone}}
+                    {{ form.phone(value=user.phone)}}
                     <br>
                     {% for error in form.errors.phone %}
                         <span style="color: red;">[{{error}}]</span>
@@ -47,18 +40,20 @@
                 </dd>
                 <dt>Mobile phone:</dt>
                 <dd>
-                    {{form.mobile}}
+                    {{ form.mobile(value=user.mobile)}}
                     <br>
                     {% for error in form.errors.mobile %}
                         <span style="color: red;">[{{error}}]</span>
                     {% endfor %}
                 </dd>
                 <dt>*Status:</dt>
-                <dd>{{form.status}}</dd>
+                <dd>
+                    {{form.status(value=user.status)}}
+                </dd>
                 <dt></dt>
-                <dd><br><input type=submit value="Create">
+                <dd><br><input type=submit value="Change">
             </dl>
         </form>
     {% endblock %}
-</body>
+    </body>
 </html>

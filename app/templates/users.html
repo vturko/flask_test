@@ -5,6 +5,10 @@
     <title>Users</title>
 </head>
 <body>
+    <a href="/add_user">Add new user</a>
+    {% if message %}
+        <h1 class=error style="color: red; text-align: left"> {{ message }}</h1>
+    {% endif %}
     <h1 style="text-align: center">USERS</h1>
     <br>
     <table style="width:100%">
@@ -19,7 +23,18 @@
             <td>{{user.name}}</td>
             <td>{{user.email}}</td>
             <td>{{user.status}}</td>
-            <td> + V </td>
+            <td>
+                <span style="float:left;">
+                    <form method="get" action="{{ url_for('change_user', id=user.id) }}">
+                        <button type="submit">Update</button>
+                    </form>
+                </span>
+                <span style="float:right;">
+                    <form method="post" action="{{ url_for('delete_user', id=user.id) }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </span>
+            </td>
         </tr>
         {% endfor %}
     </table>
