@@ -14,7 +14,7 @@
         {% if confirm_msg %}
             <h1 class=error style="text-align: right"> {{ confirm_msg }}</h1>
         {% endif %}
-        <h2>Change User:</h2>
+        <h2>Change User Data:</h2>
         <form action="{{ url_for('change_user', id=user.id)}}" method="post">
             {{ form.csrf_token }}
             <dl>
@@ -51,10 +51,6 @@
                 <dd>
                     {{form.status(value=user.status)}}
                 </dd>
-                <!--<dt>Courses:</dt>-->
-                <!--<dd>-->
-                    <!---->
-                <!--</dd>-->
                 <dt></dt>
                 <dd><br><input type=submit value="Save">
             </dl>
@@ -70,7 +66,6 @@
                     data: {course_id: course_id, user_id: user_id},
                     type: 'POST',
                     success: function(response) {
-                        <!--console.log(response);-->
                         $("body").html(response)
                     },
                     error: function(error) {
@@ -93,6 +88,19 @@
             </tr>
             {% endfor %}
         </table>
+
+        {% if has_avail %}
+        <form action="{{ url_for('add_course', user_id=user.id)}}" method="post">
+            {{ form_course.csrf_token }}
+             <dl>
+                 <dd>
+                     {{ form_course.courses }}
+                     <input type=submit value="Add course">
+                 </dd>
+             </dl>
+
+        </form>
+        {% endif %}
 
     {% endblock %}
     </body>
