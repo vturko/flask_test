@@ -14,6 +14,7 @@ class AddUserFrom(FlaskForm):
     phone = StringField('phone')
     mobile = StringField('mobile')
     status = SelectField('status', choices=[('Inactive', 'Inactive'), ('Active', 'Active')])
+    courses = SelectField('status')
 
     phone_templ_list = ['\d{11}$', '\d\(\d{3}\)\d{7}$', '\+\d{11}$', '\+\d\(\d{3}\)\d{7}$']
 

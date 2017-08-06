@@ -1,6 +1,7 @@
 from flask import request, render_template, redirect, url_for
 from app import app
 from app.service.user_service import UserService
+from app.service.course_user_service import CourseUserService
 from user_forms import AddUserFrom#, ChangeUserForm
 
 @app.route('/')
@@ -57,7 +58,9 @@ def change_user(id):
     user = user_s.get_user_by_id(id)
 
     form = AddUserFrom(status=user['status'])
-    print 888888888888, user
+    course_u = CourseUserService()
+    user_courses = course_u.select_by_user_id(id)
+
     if request.method == 'POST' and form.validate_on_submit():
         if request.form:
             print 828282828, request.form
@@ -70,9 +73,16 @@ def change_user(id):
                 confirm = updated
 
             user = user_s.get_user_by_id(id)
-    else:
-        print 6666666666, request.form
 
     return render_template('change_user.html', user=user, form=form,
-                           error_msg=error, confirm_msg=confirm)
+                           error_msg=error, confirm_msg=confirm,
+                           user_courses=user_courses)
 
+@app.route('/delete_user_course', methods=['POST'])
+def delete_course_user():
+    print request.form['course_id']
+
+    course_u = CourseUserService()
+    course_u.delete_user_course(request.form['user_id'], request.form['course_id'])
+
+    return redirect(url_for('.change_user', id=request.form['user_id']))

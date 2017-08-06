@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <title>Title</title>
 </head>
 <body>
@@ -50,10 +51,49 @@
                 <dd>
                     {{form.status(value=user.status)}}
                 </dd>
+                <!--<dt>Courses:</dt>-->
+                <!--<dd>-->
+                    <!---->
+                <!--</dd>-->
                 <dt></dt>
-                <dd><br><input type=submit value="Change">
+                <dd><br><input type=submit value="Save">
             </dl>
         </form>
+        <hr>
+
+        <h2>Courses:</h2>
+
+        <script>
+            function del_course(course_id, user_id) {
+                $.ajax({
+                    url: '/delete_user_course',
+                    data: {course_id: course_id, user_id: user_id},
+                    type: 'POST',
+                    success: function(response) {
+                        <!--console.log(response);-->
+                        $("body").html(response)
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        </script>
+
+        <table style="width:100%" id="table">
+            {% for course in user_courses %}
+            <tr id="tr{{course.id}}">
+                <td>{{course.name}}</td>
+                <td>
+                     <span style="float:right;">
+                         <input id="{{course.id}}" type="button" value="Delete"
+                               onclick="del_course('{{course.id}}', '{{user.id}}');"/>
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
     {% endblock %}
     </body>
 </html>
