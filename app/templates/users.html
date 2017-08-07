@@ -10,7 +10,7 @@
         <h1 class=error style="color: red; text-align: left"> {{ message }}</h1>
     {% endif %}
 
-    <div class=pagination>
+    <div class=pagination style="float:right;">
     {% for page in pagination.iter_pages() %}
     {% if page %}
         {% if page != pagination.page %}
