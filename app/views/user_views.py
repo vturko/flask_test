@@ -16,11 +16,7 @@ def users(page=1):
         message = request.args['message']
     user_s = UserService()
     count = user_s.count_all_users()
-    print 1111111, count
-    # users = user_s.select_all_users()
-    # return render_template('users.html', users=users, message=message)
-
-    users = user_s.select_page_users(page,per_page)
+    users = user_s.select_page_users(page, per_page)
     if not users and page != 1:
         abort(404)
     pagination = Pagination(page, per_page, count)
