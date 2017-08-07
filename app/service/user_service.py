@@ -2,6 +2,8 @@ from collections import OrderedDict
 from base_servise import BaseService
 
 USERS_SELECT = 'SELECT * FROM user'
+USERS_PAGE_SELECT = 'SELECT * FROM user LIMIT {},{};'
+USERS_COUNT = 'SELECT COUNT(*) FROM user'
 SELECT_BY_ID = 'SELECT * FROM user WHERE id="{}"'
 SELECT_BY_NAME = 'SELECT * FROM user WHERE name="{}"'
 INSERT_USER = 'INSERT INTO user ({}) VALUES ({});'
@@ -14,6 +16,22 @@ class UserService(BaseService):
 
     def select_all_users(self):
         select_result = self.sql_execute(USERS_SELECT, fetchall=True)
+
+        users = []
+        if select_result:
+            for user in select_result:
+                users.append({
+                    'id': user[0],
+                    'name': user[1],
+                    'email': user[2],
+                    'status': self.get_status(user[3])
+                })
+
+        return users
+
+    def select_page_users(self, page, per_page):
+        select_result = self.sql_execute(USERS_PAGE_SELECT.format((page - 1) * per_page, per_page),
+                                         fetchall=True)
 
         users = []
         if select_result:
@@ -48,6 +66,9 @@ class UserService(BaseService):
     def select_by_name(self, user_name):
         select_result = self.sql_execute(SELECT_BY_NAME.format(user_name), fetchone=True)
         return select_result
+
+    def count_all_users(self):
+        return self.sql_execute(USERS_COUNT, fetchone=True)[0]
 
     def add_user(self, user_data):
         exist_in_db = self.select_by_name(user_data['name'])

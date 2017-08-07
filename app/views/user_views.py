@@ -1,18 +1,30 @@
-from flask import request, render_template, redirect, url_for
+from flask import request, render_template, redirect, url_for, abort
 from app import app
 from app.service.user_service import UserService
 from app.service.course_user_service import CourseUserService
 from user_forms import AddUserFrom, CourseForm
+from pagination import Pagination
 
 
+@app.route('/')
 @app.route('/users')
-def users():
+@app.route('/users/<int:page>')
+def users(page=1):
+    per_page = 5
     message = None
     if 'message' in request.args:
         message = request.args['message']
     user_s = UserService()
-    users = user_s.select_all_users()
-    return render_template('users.html', users=users, message=message)
+    count = user_s.count_all_users()
+    print 1111111, count
+    # users = user_s.select_all_users()
+    # return render_template('users.html', users=users, message=message)
+
+    users = user_s.select_page_users(page,per_page)
+    if not users and page != 1:
+        abort(404)
+    pagination = Pagination(page, per_page, count)
+    return render_template('users.html', pagination=pagination, users=users, message=message)
 
 
 @app.route('/delete/<int:id>', methods=['POST'])
@@ -93,3 +105,10 @@ def add_course(user_id):
     course_u.add_user_course(user_id, course_id)
 
     return redirect(url_for('.change_user', id=user_id))
+
+
+def url_for_other_page(page):
+    args = request.view_args.copy()
+    args['page'] = page
+    return url_for(request.endpoint, **args)
+app.jinja_env.globals['url_for_other_page'] = url_for_other_page
